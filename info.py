@@ -1,0 +1,2 @@
+USERNAME = '@qq.com'
+PASSWORD = ''
