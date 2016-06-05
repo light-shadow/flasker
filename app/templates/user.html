@@ -10,6 +10,7 @@
         {% if user.name or user.location %}
         <p>
             {% if user.name %}{{ user.name }}{% endif %}
+            <br >
             {% if user.location %}
                 From <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a>
             {% endif %}
@@ -33,4 +34,6 @@
         </p>
     </div>
 </div>
+<h4>Posts by {{ user.username }}</h4>
+{% include '_posts.html' %}
 {% endblock %}
