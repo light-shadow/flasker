@@ -1,5 +1,7 @@
 # coding:utf-8
 import hashlib
+import bleach
+from markdown import markdown
 from . import db, login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app, request
@@ -188,10 +190,27 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.username
 
 
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+
+login_manager.anonymous_user = AnonymousUser
+
+
+@login_manager.user_loader    # 添加用户的回调函数
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
 class Post(db.Model):
     __tables__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
@@ -210,18 +229,13 @@ class Post(db.Model):
             db.session.add(p)
             db.session.commit()
 
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initator):
+        allowed_tags = ['a', 'abbr', 'aconym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                        'h1', 'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
 
-class AnonymousUser(AnonymousUserMixin):
-    def can(self, permissions):
-        return False
-
-    def is_administrator(self):
-        return False
-
-
-login_manager.anonymous_user = AnonymousUser
-
-
-@login_manager.user_loader    # 添加用户的回调函数
-def load_user(user_id):
-    return User.query.get(int(user_id))
+db.event.listen(Post.body, 'set', Post.on_changed_body)
