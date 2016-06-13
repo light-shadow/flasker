@@ -17,6 +17,7 @@ class Config:
     FLASKY_ADMIN = 'wangxuan8901@126.com'
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_FOLLOWERS_PER_PAGE = 20
+    FLASKY_COMMENTS_PER_PAGE = 10
 
     @staticmethod
     def init_app(app):
