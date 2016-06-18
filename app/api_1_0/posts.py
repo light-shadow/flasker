@@ -45,9 +45,9 @@ def get_post(id):
     return jsonify(post.to_json())
 
 
-@api.route('/posts/', methods=['PUT'])    # 定义编辑博客文章的路由
+@api.route('/posts/<int:id>', methods=['PUT'])    # 定义编辑博客文章的路由
 @permission_required(Permission.WRITE_ARTICLES)
-def edit_post():
+def edit_post(id):
     post = Post.query.get_or_404(id)
     if g.current_user != post.author and \
             not g.current_user.can(Permission.ADMINISTER):
