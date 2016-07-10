@@ -1,17 +1,18 @@
+# coding: utf-8
 import os
-from secret import USERNAME, PASSWORD
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
+    SSL_DISABLE = False
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     MAIL_SERVER = 'smtp.126.com'
     MAIL_PORT = 25
     MAIL_USE_TLS = True
     MAIL_DEBUG = True
-    MAIL_USERNAME = USERNAME
-    MAIL_PASSWORD = PASSWORD
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[FLASKY]'
     FLASKY_MAIL_SENDER = 'Flasky Admin <wangxuan8901@126.com>'
     FLASKY_ADMIN = 'wangxuan8901@126.com'
@@ -66,10 +67,31 @@ class ProductionConfig(Config):
             mail_handler.setLevel(logging.ERROR)
             app.logger.addHandler(mail_handler)
 
+
+class HerokuConfig(ProductionConfig):
+    SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
+
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+
+        # handle proxy server headers
+        from werkzeug.contrib.fixers import ProxyFix
+        app.wsgi_app = ProxyFix(app.wsgi_app)
+
+        # log to stderr
+        import logging
+        from logging import StreamHandler
+        file_handler = StreamHandler()
+        file_handler.setLevel(logging.WARNING)
+        app.logger.addHandler(file_handler)
+
+
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
+    'heroku': HerokuConfig,
 
     'default': DevelopmentConfig
 }
