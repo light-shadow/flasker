@@ -1,14 +1,14 @@
-"""empty message
+"""caching of avatar hashes
 
-Revision ID: d1c40731f683
-Revises: 75bedda73792
-Create Date: 2016-06-02 15:52:11.398590
+Revision ID: 198b0eebcf9
+Revises: d66f086b258
+Create Date: 2014-02-04 09:10:02.245503
 
 """
 
 # revision identifiers, used by Alembic.
-revision = 'd1c40731f683'
-down_revision = '75bedda73792'
+revision = '198b0eebcf9'
+down_revision = 'd66f086b258'
 
 from alembic import op
 import sqlalchemy as sa

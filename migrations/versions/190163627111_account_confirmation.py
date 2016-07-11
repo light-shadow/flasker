@@ -1,14 +1,14 @@
-"""empty message
+"""account confirmation
 
-Revision ID: dfcd792ccd78
-Revises: b57e07001730
-Create Date: 2016-05-31 09:45:03.879349
+Revision ID: 190163627111
+Revises: 456a945560f6
+Create Date: 2013-12-29 02:58:45.577428
 
 """
 
 # revision identifiers, used by Alembic.
-revision = 'dfcd792ccd78'
-down_revision = 'b57e07001730'
+revision = '190163627111'
+down_revision = '456a945560f6'
 
 from alembic import op
 import sqlalchemy as sa
