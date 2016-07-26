@@ -1,3 +1,4 @@
+# coding: utf-8
 from flask import render_template, abort, flash, redirect, url_for, request, \
        current_app, make_response
 from . import main
@@ -6,7 +7,6 @@ from ..models import User, Role, Post, Permission, Comment
 from .. import db
 from flask.ext.sqlalchemy import get_debug_queries
 from flask.ext.login import current_user, login_required
-from flask.ext.sqlalchemy import get_debug_queries
 from ..decorators import admin_required, permission_required
 
 

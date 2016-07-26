@@ -39,14 +39,14 @@ class ChangePasswordForm(Form):
     old_password = PasswordField(u'原密码', validators=[Required()])
     password = PasswordField(u'新密码', validators=[
         Required(), EqualTo('password2', message=u'密码前后必须一致！')])
-    password2 = PasswordField('确认密码', validators=[Required()])
-    submit = SubmitField('更换密码')
+    password2 = PasswordField(u'确认密码', validators=[Required()])
+    submit = SubmitField(u'更换密码')
 
 
 class PasswordResetRequestForm(Form):
     email = StringField(u'邮箱', validators=[Required(), Length(1, 64),
                                              Email()])
-    submit = SubmitField('重置邮箱')
+    submit = SubmitField(u'重置邮箱')
 
 
 class PasswordResetForm(Form):
@@ -59,7 +59,7 @@ class PasswordResetForm(Form):
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first() is None:
-            raise ValidationError('此邮箱未注册！')
+            raise ValidationError(u'此邮箱未注册！')
 
 
 class ChangeEmailForm(Form):
