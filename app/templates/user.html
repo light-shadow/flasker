@@ -24,7 +24,7 @@
             加入时间 {{ moment(user.member_since).format('L') }}. 
             上一次在线 {{ moment(user.last_seen).fromNow() }}.
         </p>
-        <p>{{ user.posts.count() }}博客文章.</p>
+        <p>{{ user.posts.count() }}篇博客文章.</p>
         <p>
             {% if current_user.can(Permission.FOLLOW) and user != current_user %}
                 {% if not current_user.is_following(user) %}
@@ -56,6 +56,6 @@
         </p>
     </div>
 </div>
-<h4>Posts by {{ user.username }}</h4>
+<h4>{{ user.username }}发表的博文</h4>
 {% include '_posts.html' %}
 {% endblock %}
