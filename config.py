@@ -1,6 +1,6 @@
 # coding: utf-8
 import os
-from secret import USERNAME, PASSWORD
+from .secret import USERNAME, PASSWORD
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
