@@ -1,2 +1,0 @@
-USERNAME = '@qq.com'
-PASSWORD = ''
